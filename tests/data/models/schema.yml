@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: Customer dimension table
+    columns:
+      - name: customer_id
+        description: Primary key for customers
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: Customer's first name
+      - name: last_name
+        description: Customer's last name
+      - name: email
+        description: Customer's email address
+      - name: created_at
+        description: Customer creation timestamp
+
+  - name: fact_orders
+    description: Order facts table
+    columns:
+      - name: order_id
+        description: Primary key for orders
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to customer dimension
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+      - name: first_name
+        description: Customer's first name from the customer dimension
+      - name: last_name
+        description: Customer's last name from the customer dimension
+      - name: order_date
+        description: Date of the order
+      - name: amount
+        description: Order amount
