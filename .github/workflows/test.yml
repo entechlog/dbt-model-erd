@@ -41,7 +41,7 @@ jobs:
     - name: Run tests
       run: |
         pip install pytest pytest-cov
-        pytest tests/ -v --cov=. --cov-report=xml
+        pytest tests/ -v --cov=. --cov-report=xml --ignore=__init__.py
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
