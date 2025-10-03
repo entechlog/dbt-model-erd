@@ -1,15 +1,15 @@
 """End-to-end integration tests for dbt-erd."""
 
 import os
+import sys
 import tempfile
 
 import pytest
 import yaml
 
-import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import dbt_erd
 import config as cfg
+import dbt_erd
 
 
 def create_test_dbt_project(project_dir):
@@ -322,14 +322,14 @@ SELECT * FROM final
             yaml.dump(fact_schema, f, sort_keys=False)
 
         # Process models
-        import utils
         import model_analyzer
+        import utils
 
         sql_files = utils.find_sql_files(fact_dir)
         assert len(sql_files) == 2
 
         config = cfg.load_config()
-        columns_info = model_analyzer.get_column_info(models_dir)
+        _ = model_analyzer.get_column_info(models_dir)
 
         fact_models = []
         for sql_file in sql_files:
@@ -377,8 +377,8 @@ def test_no_dimension_references():
             yaml.dump(fact_schema, f)
 
         # Process
-        import utils
         import model_analyzer
+        import utils
 
         config = cfg.load_config()
         sql_files = utils.find_sql_files(fact_dir)

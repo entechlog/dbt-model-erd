@@ -1,16 +1,16 @@
 """Edge case tests for dbt-erd."""
 
 import os
+import sys
 import tempfile
 
 import pytest
 import yaml
 
-import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import mermaid_generator
 import model_analyzer
 import yaml_manager
-import mermaid_generator
 
 
 def test_malformed_sql_file(temp_dir):

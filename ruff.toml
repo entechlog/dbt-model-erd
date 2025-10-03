@@ -1,6 +1,6 @@
 # Target Python version
-target-version = "py37"
-line-length = 88
+target-version = "py38"
+line-length = 100
 
 # Exclude patterns
 exclude = [
@@ -47,10 +47,15 @@ ignore = [
     "F401",  # Imported but unused
     "BLE001", # Blind exception catch - we'll fix these incrementally
     "N999",  # Invalid module name (for dbt-erd with hyphens)
+    "S101",  # Use of assert (allowed in tests)
+    "PIE810", # Multiple startswith/endswith calls
 ]
 
 # Allow unused variables when underscore-prefixed
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "D"]  # Allow asserts in tests, ignore missing docstrings
 
 [lint.mccabe]
 max-complexity = 15
