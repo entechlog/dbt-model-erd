@@ -1,6 +1,6 @@
-# Contributing to dbt-erd
+# Contributing to dbt-model-erd
 
-Thank you for your interest in contributing to dbt-erd! We welcome contributions from the community.
+Thank you for your interest in contributing to dbt-model-erd! We welcome contributions from the community.
 
 ## 🚀 Getting Started
 
@@ -16,8 +16,8 @@ Thank you for your interest in contributing to dbt-erd! We welcome contributions
 
 2. **Clone your fork**:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/dbt-erd.git
-   cd dbt-erd
+   git clone https://github.com/YOUR_USERNAME/dbt-model-erd.git
+   cd dbt-model-erd
    ```
 
 3. **Install in development mode**:

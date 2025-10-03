@@ -5,14 +5,14 @@
 ### From PyPI (after publishing)
 
 ```bash
-pip install dbt-erd
+pip install dbt-model-erd
 ```
 
 ### For Development
 
 ```bash
-git clone https://github.com/entechlog/dbt-erd.git
-cd dbt-erd
+git clone https://github.com/entechlog/dbt-model-erd.git
+cd dbt-model-erd
 python setup.py install --user
 ```
 
@@ -38,7 +38,7 @@ your-dbt-project/
 │       └── schema.yml
 ```
 
-### 2. Run dbt-erd
+### 2. Run dbt-model-erd
 
 ```bash
 cd your-dbt-project
@@ -242,4 +242,4 @@ See `examples/basic_config.yml` and `examples/advanced_config.yml` for full opti
 
 - Read full documentation: [README.md](README.md)
 - Contribute: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Report issues: [GitHub Issues](https://github.com/entechlog/dbt-erd/issues)
+- Report issues: [GitHub Issues](https://github.com/entechlog/dbt-model-erd/issues)
