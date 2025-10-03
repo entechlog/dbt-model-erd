@@ -5,7 +5,7 @@ This package provides tools to generate Mermaid entity-relationship diagrams
 for dbt models based on naming standards and SQL references.
 """
 
-__version__ = "1.0.0"
+__version__ = "0.1.0"
 
 from .config import load_config, save_default_config
 from .dbt_erd import main as _main
