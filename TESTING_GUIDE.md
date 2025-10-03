@@ -1,4 +1,4 @@
-# Testing dbt-erd Locally
+# Testing dbt-model-erd Locally
 
 ## Step 1: Install in Development Mode
 

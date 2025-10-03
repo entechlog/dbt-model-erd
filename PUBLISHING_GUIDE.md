@@ -1,6 +1,6 @@
 # Publishing Guide for Maintainers
 
-This guide is for **maintainers** publishing new versions of dbt-erd.
+This guide is for **maintainers** publishing new versions of dbt-model-erd.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ __version__ = "0.2.0"  # Update this
 **`setup.py`:**
 ```python
 setup(
-    name="dbt-erd",
+    name="dbt-model-erd",
     version="0.2.0",  # Update this
     ...
 )

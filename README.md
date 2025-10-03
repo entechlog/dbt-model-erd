@@ -1,13 +1,13 @@
-# 📊 dbt-erd
+# 📊 dbt-model-erd
 
 > **Automatically generate beautiful entity-relationship diagrams for your dbt models**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-## 🎯 What is dbt-erd?
+## 🎯 What is dbt-model-erd?
 
-`dbt-erd` analyzes your dbt SQL models and YAML schemas to automatically generate interactive ER diagrams showing relationships between fact and dimension tables. No manual diagramming required!
+`dbt-model-erd` analyzes your dbt SQL models and YAML schemas to automatically generate interactive ER diagrams showing relationships between fact and dimension tables. No manual diagramming required!
 
 ### ✨ Key Features
 
@@ -26,7 +26,7 @@
 ### Installation
 
 ```bash
-pip install dbt-erd
+pip install dbt-model-erd
 ```
 
 ### Basic Usage
@@ -204,8 +204,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      - name: Install dbt-erd
-        run: pip install dbt-erd
+      - name: Install dbt-model-erd
+        run: pip install dbt-model-erd
       - name: Generate ERD diagrams
         run: python -m dbt_erd --model-path models/fact
       - name: Commit changes
@@ -225,7 +225,7 @@ jobs:
 
 ### Pure Browser-Based Rendering
 
-dbt-erd generates diagrams without requiring Node.js or making external API calls:
+dbt-model-erd generates diagrams without requiring Node.js or making external API calls:
 
 1. **Mermaid Source Code (.mmd)**: Raw diagram definition you can version control
 2. **HTML with Client-Side Rendering (.html)**: Interactive diagram rendered in the browser
@@ -258,8 +258,8 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 ### Development Setup
 
 ```bash
-git clone https://github.com/entechlog/dbt-erd.git
-cd dbt-erd
+git clone https://github.com/entechlog/dbt-model-erd.git
+cd dbt-model-erd
 pip install -e ".[dev]"
 
 # Run tests
@@ -302,14 +302,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Built with [Mermaid.js](https://mermaid.js.org/) for diagram rendering
 - Inspired by the dbt community's need for better data model visualization
-- Thanks to all [contributors](https://github.com/entechlog/dbt-erd/graphs/contributors)
+- Thanks to all [contributors](https://github.com/entechlog/dbt-model-erd/graphs/contributors)
 
 ---
 
 ## 📧 Support & Community
 
-- **Issues**: [GitHub Issues](https://github.com/entechlog/dbt-erd/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/entechlog/dbt-erd/discussions)
+- **Issues**: [GitHub Issues](https://github.com/entechlog/dbt-model-erd/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/entechlog/dbt-model-erd/discussions)
 - **dbt Slack**: [#tools-and-integrations](https://getdbt.slack.com)
 
 ---
@@ -318,7 +318,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you find this tool helpful, please consider giving it a star on GitHub!
 
-[![Star History Chart](https://api.star-history.com/svg?repos=entechlog/dbt-erd&type=Date)](https://star-history.com/#entechlog/dbt-erd&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=entechlog/dbt-model-erd&type=Date)](https://star-history.com/#entechlog/dbt-model-erd&Date)
 
 ---
 

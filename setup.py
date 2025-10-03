@@ -5,13 +5,13 @@ with open("README.md", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="dbt-erd",
+    name="dbt-model-erd",
     version="0.1.0",
     author="Entechlog",
     description="Generate entity-relationship diagrams for dbt models",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/entechlog/dbt-erd",
+    url="https://github.com/entechlog/dbt-model-erd",
     py_modules=[
         "__init__",
         "config",
@@ -43,7 +43,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "dbt-erd=dbt_erd:main",
+            "dbt-model-erd=dbt_erd:main",
         ],
     },
     include_package_data=True,
