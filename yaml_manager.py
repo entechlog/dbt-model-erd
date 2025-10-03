@@ -99,6 +99,9 @@ def get_relative_asset_path(
     # Get relative path from project_dir to model_path
     model_rel_path = os.path.relpath(model_path, project_dir)
 
+    # Normalize path separators to forward slashes for cross-platform compatibility
+    model_rel_path = model_rel_path.replace(os.sep, "/")
+
     # Get the asset base path from config
     asset_base = config["paths"]["asset_base"]
 
@@ -110,7 +113,7 @@ def get_relative_asset_path(
     if model_rel_path.startswith("models/"):
         asset_rel_path = model_rel_path.replace("models/", asset_base + "/", 1)
     else:
-        asset_rel_path = os.path.join(asset_base, model_rel_path)
+        asset_rel_path = asset_base + "/" + model_rel_path
 
     # Return relative path for docs reference (from project root)
     return "/{}/{}".format(asset_rel_path, model_name + "_model" + file_extension)

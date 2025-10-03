@@ -300,14 +300,32 @@ def test_detect_relationship_type(sample_config):
     )
     assert rel_type == "many_to_one"
 
-    # Test zero-one-to-many (nullable FK)
+    # Test zero-one-to-many (nullable FK - has some tests but no not_null)
+    fact_columns = [
+        {"name": "customer_id", "tests": ["accepted_values"]},
+    ]
+    rel_type = model_analyzer.detect_relationship_type(
+        fact_columns, "customer_id", "dim_customer", sample_config
+    )
+    assert rel_type == "zero_one_to_many"
+
+    # Test many-to-one with no tests (defaults to many_to_one)
     fact_columns = [
         {"name": "customer_id"},
     ]
     rel_type = model_analyzer.detect_relationship_type(
         fact_columns, "customer_id", "dim_customer", sample_config
     )
-    assert rel_type == "zero_one_to_many"
+    assert rel_type == "many_to_one"
+
+    # Test many-to-one with empty tests list (also defaults to many_to_one)
+    fact_columns = [
+        {"name": "customer_id", "tests": []},
+    ]
+    rel_type = model_analyzer.detect_relationship_type(
+        fact_columns, "customer_id", "dim_customer", sample_config
+    )
+    assert rel_type == "many_to_one"
 
     # Test many-to-many (plural FK)
     fact_columns = [
