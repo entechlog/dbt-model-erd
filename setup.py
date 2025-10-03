@@ -31,7 +31,7 @@ setup(
         "Topic :: Database",
         "Topic :: Software Development :: Documentation",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=[
         "pyyaml>=5.1",
     ],
