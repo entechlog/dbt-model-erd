@@ -339,17 +339,74 @@ dbt-erd/
 
 ---
 
-## 📋 Release Process (Maintainers Only)
+## 📋 Versioning and Releases
 
-1. Update version in `__init__.py` and `setup.py`
-2. Update `CHANGELOG.md`
-3. Create and push tag:
+### Dynamic Versioning with setuptools-scm
+
+This project uses **automatic versioning** based on git tags - **no manual version updates needed!**
+
+- Version is automatically determined from git tags using `setuptools-scm`
+- **DO NOT** manually edit version numbers in `setup.py` or anywhere else
+- Version format follows [Semantic Versioning](https://semver.org/): `MAJOR.MINOR.PATCH`
+
+### Creating a Release (Maintainers Only)
+
+1. Ensure all tests pass on `main` branch
+2. Update `CHANGELOG.md` with release notes
+3. Create and push a git tag:
    ```bash
-   git tag -a v0.2.0 -m "Release v0.2.0"
-   git push origin v0.2.0
+   git tag v1.2.3
+   git push origin v1.2.3
    ```
-4. Create GitHub release (triggers auto-publish to PyPI)
-5. Update documentation
+4. Create a GitHub release from the tag
+5. The `publish.yml` workflow automatically publishes to PyPI
+
+**Version examples:**
+- `v1.2.3` → Package version `1.2.3`
+- `v2.0.0` → Package version `2.0.0`
+- Development builds use commit hash: `1.2.3.post1.dev5+gabc123`
+
+### Branch Protection and CI Requirements
+
+To maintain code quality, **branch protection rules should be enabled** on the `main` branch:
+
+#### Setting up Branch Protection (Repository Admins)
+
+1. Go to **Settings** → **Branches** → **Branch protection rules**
+2. Add or edit rule for `main` branch:
+
+   ✅ **Require a pull request before merging**
+   - Require approvals: 1+ reviewer(s)
+
+   ✅ **Require status checks to pass before merging**
+   - Require branches to be up to date
+   - **Required status checks** (select all or a subset):
+     - `test (ubuntu-latest, 3.8)`
+     - `test (ubuntu-latest, 3.9)`
+     - `test (ubuntu-latest, 3.10)`
+     - `test (ubuntu-latest, 3.11)`
+     - `test (windows-latest, 3.8)`
+     - `test (windows-latest, 3.9)`
+     - `test (windows-latest, 3.10)`
+     - `test (windows-latest, 3.11)`
+     - `test (macos-latest, 3.8)`
+     - `test (macos-latest, 3.9)`
+     - `test (macos-latest, 3.10)`
+     - `test (macos-latest, 3.11)`
+
+   > **Tip**: You can require only Ubuntu tests if you want faster CI while still ensuring quality.
+
+   ✅ **Require conversation resolution before merging**
+
+   ✅ **Do not allow bypassing** (recommended)
+
+3. Save changes
+
+This ensures:
+- ✅ All tests pass before merge
+- ✅ Code is reviewed
+- ✅ Bugs are caught before production
+- ✅ CI failures block merges
 
 ---
 
