@@ -136,3 +136,7 @@ profiles.yml
 assets/
 *.mmd
 *.html
+.claude/settings.local.json
+
+# Auto-generated version file
+_version.py

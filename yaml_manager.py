@@ -3,7 +3,7 @@
 
 import os
 
-import yaml
+from ruamel.yaml import YAML
 
 
 def update_model_yaml(yaml_file, model_name, relative_path):
@@ -22,12 +22,14 @@ def update_model_yaml(yaml_file, model_name, relative_path):
         return False
 
     try:
+        yaml_handler = YAML()
+        yaml_handler.preserve_quotes = True
+        yaml_handler.width = 4096  # Prevent line wrapping
+
         with open(yaml_file) as f:
             try:
-                yaml_content = f.read()
-                # Use regular expression to preserve formatting
-                config = yaml.safe_load(yaml_content)
-            except yaml.YAMLError as e:
+                config = yaml_handler.load(f)
+            except Exception as e:
                 print(f"Error parsing YAML file {yaml_file}: {e}")
                 return False
 
@@ -43,23 +45,25 @@ def update_model_yaml(yaml_file, model_name, relative_path):
 
                 # We only use HTML diagrams
                 diagram_section = "\n\n## Data Model Diagram\n\n"
-                diagram_section += f"[View interactive diagram]({relative_path})\n"
+                diagram_section += f"[View interactive diagram]({relative_path})"
 
                 # Update the description
                 if "## Data Model Diagram" in desc:
                     # Replace existing diagram section
                     parts = desc.split("## Data Model Diagram")
-                    before_diagram = parts[0]
+                    before_diagram = parts[0].rstrip()  # Remove trailing whitespace/newlines
                     after_diagram = ""
                     if len(parts) > 1 and "##" in parts[1]:
                         after_section = parts[1].split("##", 1)
-                        after_diagram = "##" + after_section[1]
+                        after_diagram = "\n\n##" + after_section[1].rstrip()
 
                     model["description"] = before_diagram + diagram_section
                     if after_diagram:
-                        model["description"] += "\n\n" + after_diagram
+                        model["description"] += after_diagram
                 else:
                     # Add new diagram section
+                    # Remove trailing whitespace from existing description
+                    desc = desc.rstrip() if desc else ""
                     model["description"] = desc + diagram_section
 
                 modified = True
@@ -71,7 +75,7 @@ def update_model_yaml(yaml_file, model_name, relative_path):
 
         # Write the updated YAML
         with open(yaml_file, "w") as f:
-            yaml.dump(config, f, sort_keys=False, default_flow_style=False)
+            yaml_handler.dump(config, f)
 
         print(f"Updated model description in {yaml_file}")
         return True

@@ -6,7 +6,11 @@ with open("README.md", encoding="utf-8") as fh:
 
 setup(
     name="dbt-model-erd",
-    version="0.1.0",
+    use_scm_version={
+        "write_to": "_version.py",
+        "version_scheme": "post-release",
+        "local_scheme": "no-local-version",
+    },
     author="Entechlog",
     description="Generate entity-relationship diagrams for dbt models",
     long_description=long_description,
@@ -32,13 +36,17 @@ setup(
         "Topic :: Software Development :: Documentation",
     ],
     python_requires=">=3.8",
+    setup_requires=[
+        "setuptools_scm>=6.0",
+    ],
     install_requires=[
-        "pyyaml>=5.1",
+        "ruamel.yaml>=0.17.0",
     ],
     extras_require={
         "dev": [
             "pytest>=6.0.0",
             "ruff>=0.1.0",
+            "pyyaml>=5.1",  # Used by tests for creating test fixtures
         ],
     },
     entry_points={

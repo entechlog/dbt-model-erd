@@ -248,3 +248,200 @@ def test_get_relative_asset_path_different_asset_base():
     )
 
     assert path == "/docs/diagrams/dw/fact/fact_orders_model.html"
+
+
+def test_update_model_yaml_no_extra_empty_lines(temp_dir):
+    """Test that running update multiple times doesn't add extra empty lines.
+
+    This test reproduces the bug where users reported empty lines being
+    added to descriptions on each run, even when the diagram already exists.
+    """
+    # Create a YAML file with existing ERD link (simulating user's YAML after first run)
+    yaml_content = """version: 2
+models:
+- name: fact_orders
+  description: 'Order-level fact table aggregated from order items
+
+
+    ## Data Model Diagram
+
+
+    [View interactive diagram](/assets/img/dw/fact/fact_orders_model.html)
+
+    '
+  columns:
+  - name: order_id
+    description: Surrogate key for orders
+"""
+
+    yaml_file = os.path.join(temp_dir, "schema.yml")
+    with open(yaml_file, "w") as f:
+        f.write(yaml_content)
+
+    # Read original to count newlines
+    with open(yaml_file) as f:
+        original = f.read()
+
+    original_newline_count = original.count('\n\n\n')
+
+    # Run the update function (simulating running dbt-erd again)
+    result = yaml_manager.update_model_yaml(
+        yaml_file,
+        "fact_orders",
+        "/assets/img/dw/fact/fact_orders_model.html"
+    )
+
+    assert result is True
+
+    # Read the updated file
+    with open(yaml_file) as f:
+        updated = f.read()
+
+    updated_newline_count = updated.count('\n\n\n')
+
+    # Should NOT add extra empty lines
+    assert updated_newline_count <= original_newline_count, \
+        f"Extra empty lines added: {original_newline_count} -> {updated_newline_count}"
+
+    # Run it AGAIN to make sure it's idempotent
+    result = yaml_manager.update_model_yaml(
+        yaml_file,
+        "fact_orders",
+        "/assets/img/dw/fact/fact_orders_model.html"
+    )
+
+    assert result is True
+
+    with open(yaml_file) as f:
+        second_update = f.read()
+
+    second_newline_count = second_update.count('\n\n\n')
+
+    # Should STILL not add extra empty lines
+    assert second_newline_count <= original_newline_count, \
+        f"Extra empty lines added on second run: {original_newline_count} -> {second_newline_count}"
+
+
+def test_update_model_yaml_preserve_double_quotes(temp_dir):
+    """Test that double quotes in descriptions are preserved.
+
+    This test reproduces the bug where users reported that double-quoted
+    descriptions were being converted to single quotes or unquoted.
+    """
+    # Create a YAML file with double-quoted descriptions
+    yaml_content = '''version: 2
+models:
+- name: fact_orders
+  description: "Order-level fact table"
+  columns:
+  - name: order_id
+    description: "Surrogate key for orders"
+  - name: order_date
+    description: "Date of the order"
+'''
+
+    yaml_file = os.path.join(temp_dir, "schema.yml")
+    with open(yaml_file, "w") as f:
+        f.write(yaml_content)
+
+    # Run the update function
+    result = yaml_manager.update_model_yaml(
+        yaml_file,
+        "fact_orders",
+        "/assets/img/dw/fact/fact_orders_model.html"
+    )
+
+    assert result is True
+
+    # Read the updated file
+    with open(yaml_file) as f:
+        updated = f.read()
+
+    # Verify double quotes are preserved for columns that weren't touched
+    assert '"Surrogate key for orders"' in updated, \
+        "Double quotes should be preserved for column descriptions"
+    assert '"Date of the order"' in updated, \
+        "Double quotes should be preserved for all column descriptions"
+
+
+def test_update_model_yaml_preserve_single_quotes(temp_dir):
+    """Test that single quotes in descriptions are preserved."""
+    yaml_file = os.path.join(temp_dir, "schema.yml")
+    # Write with single quotes explicitly
+    with open(yaml_file, "w") as f:
+        f.write("""version: 2
+models:
+- name: fact_orders
+  description: 'Order-level fact table'
+  columns:
+  - name: order_id
+    description: 'Surrogate key'
+""")
+
+    # Run the update function
+    result = yaml_manager.update_model_yaml(
+        yaml_file,
+        "fact_orders",
+        "/assets/img/dw/fact/fact_orders_model.html"
+    )
+
+    assert result is True
+
+    # Read the updated file
+    with open(yaml_file) as f:
+        updated = f.read()
+
+    # Verify single quotes are preserved for columns
+    assert "'Surrogate key'" in updated, \
+        "Single quotes should be preserved for column descriptions"
+
+
+def test_update_model_yaml_idempotent_no_changes(temp_dir):
+    """Test that running update multiple times with same path is truly idempotent.
+
+    The description should stabilize after the first update and not change on subsequent runs.
+    """
+    schema = {
+        "version": 2,
+        "models": [
+            {
+                "name": "fact_orders",
+                "description": "Order facts table",
+                "columns": []
+            }
+        ]
+    }
+
+    yaml_file = os.path.join(temp_dir, "schema.yml")
+    with open(yaml_file, "w") as f:
+        yaml.dump(schema, f)
+
+    # First update
+    yaml_manager.update_model_yaml(
+        yaml_file, "fact_orders", "/assets/img/fact/fact_orders_model.html"
+    )
+
+    with open(yaml_file) as f:
+        first_result = f.read()
+
+    # Second update
+    yaml_manager.update_model_yaml(
+        yaml_file, "fact_orders", "/assets/img/fact/fact_orders_model.html"
+    )
+
+    with open(yaml_file) as f:
+        second_result = f.read()
+
+    # Third update
+    yaml_manager.update_model_yaml(
+        yaml_file, "fact_orders", "/assets/img/fact/fact_orders_model.html"
+    )
+
+    with open(yaml_file) as f:
+        third_result = f.read()
+
+    # All results should be identical
+    assert first_result == second_result, \
+        "Second update should produce identical output to first"
+    assert second_result == third_result, \
+        "Third update should produce identical output to second"
