@@ -366,20 +366,6 @@ models:
 
 def test_update_model_yaml_preserve_single_quotes(temp_dir):
     """Test that single quotes in descriptions are preserved."""
-    # Create a YAML file with single-quoted descriptions
-    schema = {
-        "version": 2,
-        "models": [
-            {
-                "name": "fact_orders",
-                "description": 'Order-level fact table',
-                "columns": [
-                    {"name": "order_id", "description": 'Surrogate key'}
-                ]
-            }
-        ]
-    }
-
     yaml_file = os.path.join(temp_dir, "schema.yml")
     # Write with single quotes explicitly
     with open(yaml_file, "w") as f:
