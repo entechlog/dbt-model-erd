@@ -46,6 +46,7 @@ setup(
         "dev": [
             "pytest>=6.0.0",
             "ruff>=0.1.0",
+            "pyyaml>=5.1",  # Used by tests for creating test fixtures
         ],
     },
     entry_points={
